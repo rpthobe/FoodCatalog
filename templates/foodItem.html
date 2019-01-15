@@ -1,0 +1,100 @@
+{% extends "main.html" %}
+{% block content %}
+	<div class="row pageHeader">
+		<div class="col-md-12">
+			<h1>Food &amp; Courses</h1>
+            {%if 'username' not in session %}
+            <p>Must login in order to edit courses and food</p>
+            {% endif %}
+		</div>
+	</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <a href = "{{url_for('showCourses')}}">
+            <h3>Courses</h3>
+        </a>
+        {% for course in courses %}
+            <a href = "{{url_for('showFood', course_id=course.id)}}">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                        <div class="col-md-10 course-list">
+                            <h3>{{course.name}}</h3>
+                        </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    <div class="col-md-8">
+        {% if food !=[] %}
+            <h3>Food Item: {{food.name}}</h3>
+            <div class="row">
+                <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <p>Description: {{food.description}}</p>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        
+        {%if 'username' in session %}
+        {%for food_id in foodItem %}
+            {% if food.id in food_id%}
+        <div class="row">
+            <div class = "col-md-6">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editFoodItem">
+                    Edit Food Item
+                </button>
+            </div>
+            <div class = "col-md-6">
+                    <a href="{{url_for('deleteFoodItem', foodItem_id = food.id)}}">
+                    <button type="submit" class="btn btn-primary">Delete Food Item</button>
+              </a>
+                
+                
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+
+
+<!-- Modal Edit Item -->
+{% if food !=[] %}
+<div class="modal fade" id="editFoodItem" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit {{food.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form action = "" method = "post">
+          <div class="modal-body">
+                <div class="form-group">
+                <label for="newCourse">Food Item Name</label>
+                <input type="text" class="form-control" required="required" name = "name" id="foodName" placeholder="{{food.name}}">
+                <label for="newCourse">Food Item Description</label>
+                <input type="textarea" class="form-control" required="required" name = "description" id="foodName" placeholder="{{food.description}}">
+                </div>
+          </div>
+          <div class="modal-footer">
+            <a href="{{url_for('showFoodItem', foodItem_id = food.id)}}">
+                    <button type="submit" class="btn btn-primary">Save</button>
+            </a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+
+{% endblock %}

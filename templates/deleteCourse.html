@@ -1,0 +1,51 @@
+{% extends "main.html" %}
+{% block content %}
+
+<div class="row pageHeader">
+		<div class="col-md-12">
+			<h1>Food &amp; Courses</h1>
+		</div>
+	</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h3>Courses</h3>
+        {% for course in courses %}
+            <a href = "{{url_for('showFood', course_id=course.id)}}">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                        <div class="col-md-10 course-list">
+                            <h3>{{course.name}}</h3>
+                        </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-8">
+        <h2> What Course do you want to delete?</h2>
+        <form action = "" method = "post">
+            <div class="form-group">
+              <label for="courseDelete">Courses:</label>
+              <select id = "courseDelete" name="courseDelete" required="required">
+                  {% for course in userCourse %}
+                  <option value = "{{course.id}}">{{course.name}}</option>
+                  {% endfor %}
+                </select>
+            </div>
+            <a href = "{{url_for('deleteCourse')}}">
+                <button type="submit" class="btn btn-default delete" id="submit" type="submit">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Delete</button>
+            </a>
+            </form>
+            <a href = "{{url_for('showCourses')}}">
+                <button class="btn btn-default">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+            </a>
+    </div>
+</div>
+
+
+
+{% endblock %}

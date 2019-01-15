@@ -1,0 +1,93 @@
+{% extends "main.html" %}
+{% block content %}
+	<div class="row pageHeader">
+		<div class="col-md-12">
+			<h1>Food &amp; Courses</h1>
+            {%if 'username' not in session %}
+            <p>Must login in order to edit courses and food</p>
+            {% endif %}
+		</div>
+	</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <a href = "{{url_for('showCourses')}}">
+            <h3>Courses</h3>
+        </a>
+        {% for course in courses %}
+            <a href = "{{url_for('showFood', course_id=course.id)}}">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                        <div class="col-md-10 course-list">
+                            <h3>{{course.name}}</h3>
+                        </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    <div class="col-md-8">
+        <div class = "row">
+            <div class = "col-md-12">
+                <h3>Food Items</h3>
+                    {% if food !=[] %}
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                                <div class="col-md-3">
+                                    {% for i in food %}
+                                    <a href = "{{url_for('showFoodItem', foodItem_id=i.id)}}">
+                                    <p>{{i.name}}</p>
+                                    </a>
+                                    {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+            </div>
+        </div>
+        {%if 'username' in session %}
+        <div class = "row">
+            <div class = "col-md-12">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newFoodItem">
+                    Add Food Item
+                </button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="newFoodItem" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add a Food Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action = "" method = "post">
+            <div class="form-group">
+            <label for="newCourse">New Food item</label>
+            <input type="text" class="form-control" name = "newFoodName" id="foodName" placeholder="New Food name">
+            <label for="newCourse">Food Description</label>
+            <input type="textarea" class="form-control" name = "newFoodDescription" id="foodDescrip" placeholder="New Food Description">
+            </div>
+            <a href="{{url_for('showFood', course_id = course.id )}}">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </a>
+                
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
